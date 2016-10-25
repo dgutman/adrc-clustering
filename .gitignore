@@ -1,3 +1,5 @@
 data/*.jpg
 data/*.csv
 data/*.pickle
+*.pyc
+.*
