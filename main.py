@@ -43,36 +43,17 @@ centers = clustering.cluster_centers_
 labels = list(set(km.labels_))
 reordered_dist_matrix(A, km.labels_)
 cluster_common_words(patients, km.labels_)
+clust_centroids = cluster_centroids(A, patients, centers, km.labels_)
 
-for label in labels:
-	c = centers[label]
-	print c
-	idx = np.where(km.labels_ == label)
-	print len(idx[0])
-	clust_pats = [patients[i] for i in idx[0]]
-	center_point_dist = euclidean_distances([c], A[idx[0],:])
-	idx = np.argsort(center_point_dist)[0]
-	
-	tmp = [p.words for p in clust_pats]
-	unique_words = set(list(itertools.chain(*tmp)))
-	print len(unique_words)
+print centers
+for label, centroids in clust_centroids.iteritems():
+	for centroid in centroids:
+		nx.draw_spectral(centroid.graph)
+		plt.savefig('data/cluster_%d_%d.jpg' % (label, centroid.index))
+		plt.clf() 
 
-	for i in idx[0:5]:
-		nx.draw_spectral(clust_pats[i].graph)
-		plt.savefig('data/cluster_%d_%d.jpg' % (label, i))
-		plt.clf()
 
-"""
-G = nx.Graph()
-for i in range(0, n):
-	for j in range(i+1, n):
-		G.add_edge(i,j)
-
-nx.draw_spectral(G)
-plt.show()
-"""
-
-ID = 930
+ID = 397
 tmp = patients[ID].words
 labels = {}
 for word in tmp:
@@ -83,4 +64,5 @@ nx.draw_networkx_nodes(patients[ID].graph,pos,node_size=2000)
 nx.draw_networkx_labels(patients[ID].graph,pos,labels,font_size=16)
 
 nx.draw_spectral(patients[ID].graph)
+#print nx.average_degree_connectivity(patients[ID].graph)
 #plt.show()

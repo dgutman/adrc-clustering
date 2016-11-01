@@ -14,11 +14,14 @@ def getPatients(data):
 
 	for i in range(0, len(data)):
 		patient = lambda: None
-		words = [re.sub("\s*\-\s*p|\s*\(p\)","", val).lower().split(",") 
-				 for key, val in data[i].iteritems() 
-				 if p.match(key) and val != ""]
 
-		patient.words = list(itertools.chain(*words))
+		words = [val.split(",") for key, val in data[i].iteritems() if p.match(key) and val != ""]
+		words = list(itertools.chain(*words))
+
+		for word in words:
+			word = re.sub("\s*-\s*p|\s*\(p\)", "", word).lower()
+			
+		patient.words = words
 		patient.index = index
 
 		if len(words):
@@ -104,6 +107,20 @@ def reordered_dist_matrix(X, labels):
 	plt.savefig('data/clusters.jpg')
 	plt.clf()
 
+def cluster_centroids(X, patients, centers, labels):
+	centroids = {}
+	ulabels = list(set(labels))
+
+	for label in labels:
+		centroids[label] = []
+		idx = np.where(labels == label)[0]
+		clust_pats = [patients[i] for i in idx]
+		center_patient_dist = euclidean_distances(centers[label].reshape(1,-1), X[idx,:])
+		idx = np.argsort(center_patient_dist)[0]
+		[centroids[label].append(clust_pats[i]) for i in idx[0:5]]
+
+	return centroids
+
 def cluster_common_words(patients, labels, k=10):
 	ulabels = list(set(labels))
 
@@ -116,7 +133,28 @@ def cluster_common_words(patients, labels, k=10):
 			fh.write("Cluster %d\n" % label)
 			fh.write('\n'.join('%s,%d' % x for x in words.most_common(k)) + '\n\n')
 
+def cluster_word_graph(patients, labels):
+	ulabels = list(set(labels))
+	cluster_graph = {}
 
+	for label in ulabels:
+		G = nx.Graph()
+		idx = np.where(labels == label)[0]
+
+		for index in idx:
+			patient = patients[index]
+
+			if len(patient.words) == 1:
+				G.add_node(patient.words[0])
+			else:
+				[G.add_edge(patient.words[i-1], patient.words[i]) 
+				for i in range(1, len(patient.words))]
+
+		cci = nx.clustering(G)
+		print np.mean(cci.values())
+		nx.draw(G)
+		plt.show()
+		plt.clf()
 
 def plot_dunn_index(di, n_clusters):
 	plt.plot(di, marker='*')

@@ -1,48 +1,48 @@
 Cluster 0
-dog,497
-cat,487
-horse,317
-elephant,246
-cow,240
-lion,219
-tiger,200
-rabbit,147
-bird,143
-monkey,130
+dog,330
+cat,292
+horse,143
+cow,141
+elephant,77
+dog-p,75
+lion,62
+tiger,61
+bird,56
+cat-p,54
 
 Cluster 1
-dog,239
-cat,237
-horse,167
-tiger,159
-lion,155
-cow,152
-elephant,143
-giraffe,101
-zebra,86
-snake,85
+dog,343
+cat,335
+horse,253
+cow,226
+lion,220
+tiger,207
+elephant,201
+monkey,134
+giraffe,129
+bear,128
 
 Cluster 2
-dog,457
-cat,393
-horse,206
-cow,199
-elephant,91
-bird,78
-pig,71
-lion,69
-tiger,67
-mule,60
+dog,437
+cat,418
+horse,287
+cow,232
+elephant,223
+lion,188
+tiger,172
+bird,131
+rabbit,124
+monkey,107
 
 Cluster 3
-dog,271
-cat,262
-horse,205
-tiger,179
-lion,178
-cow,175
-elephant,157
-bear,98
-giraffe,96
-pig,94
+cat,125
+dog,125
+horse,94
+tiger,92
+lion,87
+cow,86
+elephant,75
+giraffe,56
+zebra,55
+pig,45
 
