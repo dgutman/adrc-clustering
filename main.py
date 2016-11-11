@@ -14,12 +14,14 @@ patients = getPatients(data)
 patients = wordGraph(patients)
 
 n = len(patients)
-m = len(patients[0].features)
+m = len(patients[0].features) + 1
 A = np.zeros(shape=(n,m))
+features = patients[0].features.keys() + ["errors"]
 
 for patient in patients:
-	A[patient.index] = patient.features.values()
+	A[patient.index] = patient.features.values() + [len(patient.errors)]
 
+"""
 sse = []
 di = []
 n_clusters = range(2,15)
@@ -36,33 +38,28 @@ for k in n_clusters:
 
 plot_dunn_index(di, n_clusters)
 plot_sse(sse, n_clusters)
+"""
 
 km = KMeans(n_clusters=4)
 clustering = km.fit(A)
 centers = clustering.cluster_centers_
 labels = list(set(km.labels_))
 reordered_dist_matrix(A, km.labels_)
-cluster_common_words(patients, km.labels_)
-clust_centroids = cluster_centroids(A, patients, centers, km.labels_)
 
-print centers
+clust_centroids = cluster_centroids(A, patients, centers, km.labels_)
+cluster_word_importance(patients, km.labels_)
+#clust_words = cluster_words(patients, km.labels_)
+#clust_grams = cluster_ngrams(patients, km.labels_)
+
 for label, centroids in clust_centroids.iteritems():
 	for centroid in centroids:
 		nx.draw_spectral(centroid.graph)
 		plt.savefig('data/cluster_%d_%d.jpg' % (label, centroid.index))
 		plt.clf() 
 
+with open("data/cluster_centers.csv", "w") as fh:
+	w = csv.writer(fh)
+	w.writerow(features)
 
-ID = 397
-tmp = patients[ID].words
-labels = {}
-for word in tmp:
-	labels[word] = word
-
-pos = nx.spectral_layout(patients[ID].graph)
-nx.draw_networkx_nodes(patients[ID].graph,pos,node_size=2000)
-nx.draw_networkx_labels(patients[ID].graph,pos,labels,font_size=16)
-
-nx.draw_spectral(patients[ID].graph)
-#print nx.average_degree_connectivity(patients[ID].graph)
-#plt.show()
+	for center in centers:
+		w.writerow(center)

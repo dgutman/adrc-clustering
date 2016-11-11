@@ -6,6 +6,13 @@ from scipy.spatial.distance import pdist, squareform
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import Counter
+from autocorrect import spell
+import csv
+from nltk.stem.wordnet import WordNetLemmatizer
+from nltk.corpus import wordnet as wn
+from nltk import ngrams
+from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer
+from tfidf import *
 
 def getPatients(data):
 	patients = []
@@ -17,16 +24,12 @@ def getPatients(data):
 
 		words = [val.split(",") for key, val in data[i].iteritems() if p.match(key) and val != ""]
 		words = list(itertools.chain(*words))
-
-		for word in words:
-			word = re.sub("\s*-\s*p|\s*\(p\)", "", word).lower()
-			
-		patient.words = words
-		patient.index = index
-
+		patient.words, patient.errors = word_cleanup(words)
+		
 		if len(words):
-			index += 1
+			patient.index = index
 			patients.append(patient)
+			index += 1
 
 	return patients
 
@@ -52,13 +55,22 @@ def graphFeatures(G):
 	if len(cycles):
 		longestCycle = max([len(cycle) for cycle in cycles])
 
-	features = {
-		"edgeCount": len(G.edges()),
-		"nodeCount": len(G.nodes()),
-		"diameter": nx.diameter(G),
-		"cycleCount": len(cycles),
-		"longestCycle": longestCycle
-	}
+	if len(G.nodes()):
+		features = {
+			"edgeCount": len(G.edges()),
+			"nodeCount": len(G.nodes()),
+			"diameter": nx.diameter(G),
+			"cycleCount": len(cycles),
+			"longestCycle": longestCycle
+		}
+	else:
+		features = {
+			"edgeCount": 0,
+			"nodeCount": 0,
+			"diameter": 0,
+			"cycleCount": 0,
+			"longestCycle": 0
+		}
 
 	return features
 
@@ -121,40 +133,63 @@ def cluster_centroids(X, patients, centers, labels):
 
 	return centroids
 
-def cluster_common_words(patients, labels, k=10):
+def cluster_words(patients, labels):
 	ulabels = list(set(labels))
-
-	with open("data/cluster_common_words.csv", "w") as fh:
-		for label in ulabels:
-			idx = np.where(labels == label)[0]
-			words = list(itertools.chain(*[patients[i].words for i in idx]))
-			words = Counter(words)
-			
-			fh.write("Cluster %d\n" % label)
-			fh.write('\n'.join('%s,%d' % x for x in words.most_common(k)) + '\n\n')
-
-def cluster_word_graph(patients, labels):
-	ulabels = list(set(labels))
-	cluster_graph = {}
+	clust = []
 
 	for label in ulabels:
-		G = nx.Graph()
 		idx = np.where(labels == label)[0]
+		words = list(itertools.chain(*[set(patients[i].words) for i in idx]))
+		c = Counter(words)
 
-		for index in idx:
-			patient = patients[index]
+		for word, freq in c.iteritems():
+			c[word] = round(freq/float(len(idx)), 2)
+		
+		clust.append(c)
+		
+	return clust
 
-			if len(patient.words) == 1:
-				G.add_node(patient.words[0])
-			else:
-				[G.add_edge(patient.words[i-1], patient.words[i]) 
-				for i in range(1, len(patient.words))]
+def cluster_ngrams(patients, labels):
+	ulabels = list(set(labels))
+	clust = []
 
-		cci = nx.clustering(G)
-		print np.mean(cci.values())
-		nx.draw(G)
-		plt.show()
-		plt.clf()
+	for label in ulabels:
+		grams2 = []
+		idx = np.where(labels == label)[0]
+		for i in idx:
+			for gram in ngrams(patients[i].words, 2):
+				grams2.append(gram)
+
+		c = Counter(grams2)
+		for gram, freq in c.iteritems():
+			c[gram] = round(freq/float(len(idx)), 2)
+
+		clust.append(c)
+
+	return clust
+
+def cluster_word_importance(patients, labels):
+	ulabels = list(set(labels))
+	documents = []
+	results =[]
+	clust_size = []
+
+	for label in ulabels:
+		idx = np.where(labels == label)[0]
+		clust_words = list(itertools.chain(*[patients[i].words for i in idx]))
+		documents.append(" ".join(clust_words))
+		clust_size.append(float(len(idx)))
+
+	features, tfidf, tf = get_tfidf(documents)
+	feature = np.array(features)
+
+	for k in ulabels:
+		idx = np.argsort(tfidf[k][::-1][0:30])
+		results.append(np.array(features)[idx])
+		results.append( (tf[k][idx] / clust_size[k]) * 100 )
+
+	print np.stack(results, axis=1)
+	np.savetxt("data/tfidf.csv", np.stack(results, axis=1), fmt="%s,%s,%s,%s,%s,%s,%s,%s")
 
 def plot_dunn_index(di, n_clusters):
 	plt.plot(di, marker='*')
@@ -171,3 +206,28 @@ def plot_sse(sse, n_clusters):
 	plt.xticks(range(0,len(n_clusters)), n_clusters)
 	plt.savefig('data/sse.jpg')
 	plt.clf()
+
+def word_cleanup(words):
+	valid_words = []
+	errors = []
+
+	for word in words: 
+		word, valid = is_word_valid(word) 
+		
+		if valid == False:
+			errors.append(word)
+		else:
+			valid_words.append(word)
+		
+	return valid_words, errors 
+
+def is_word_valid(word):
+	lmtzr = WordNetLemmatizer()
+	word = re.sub("\s*-\s*p|\s*\(p\)", "", word).lower() 
+	lemmas = [lmtzr.lemmatize(spell(w)) for w in word.split() if re.match('\w{2,}\s*',w)] 
+	hasSynsets = min([len(wn.synsets(w)) for w in lemmas] or [0])
+ 		
+	if hasSynsets == 0:
+		return " ".join(lemmas), False
+	else:
+		return " ".join(lemmas), True
