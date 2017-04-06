@@ -1,4 +1,4 @@
-data/*.jpg
-data/*.pickle
+data
+results
 *.pyc
 .*
