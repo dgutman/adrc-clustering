@@ -5,4 +5,6 @@ Clustering dementia patients using their various tests such as clock, trail, dig
 
 How to run it?
 -------------------------
-    `source activate adrc-clustering` 
+Activate the conda environment
+
+`source activate adrc-clustering` 
