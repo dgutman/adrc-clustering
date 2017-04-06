@@ -9,7 +9,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 import itertools
 from utils import *
 
-with open("data/WordFluency.pickle", "r") as fh:
+with open("/home/mkhali8/dev/adrc-clustering/data/WordFluency.pickle", "r") as fh:
 	data = pickle.load(fh)
 
 patients = getPatients(data)

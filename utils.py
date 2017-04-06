@@ -118,7 +118,7 @@ def reordered_dist_matrix(X, labels):
 	reordered_d = D[index,:][:,index]
 	plt.imshow(reordered_d, cmap='Greys_r')
 	plt.colorbar()
-	plt.savefig('data/clusters.png')
+	plt.savefig('results/clusters.png')
 	plt.clf()
 
 def cluster_centroids(X, patients, centers, labels):
