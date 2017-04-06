@@ -3,6 +3,17 @@ ADRC Clustering Project
 
 Clustering dementia patients using their various tests such as clock, trail, digit span and verbal fluency tests.
 
+Data
+-------------------------
+Data is located in 
+
+`/home/mkhali8/dev/adrc-clustering/data`
+
+The filename is
+
+`WordFluencyMultiTest.csv` 
+
+
 How to run it?
 -------------------------
 Clone this repo:
