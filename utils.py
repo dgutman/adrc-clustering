@@ -4,6 +4,8 @@ import networkx as nx
 from sklearn.metrics.pairwise import euclidean_distances
 from scipy.spatial.distance import pdist, squareform
 import numpy as np
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 from collections import Counter
 from autocorrect import spell
@@ -116,7 +118,7 @@ def reordered_dist_matrix(X, labels):
 	reordered_d = D[index,:][:,index]
 	plt.imshow(reordered_d, cmap='Greys_r')
 	plt.colorbar()
-	plt.savefig('data/clusters.jpg')
+	plt.savefig('data/clusters.png')
 	plt.clf()
 
 def cluster_centroids(X, patients, centers, labels):

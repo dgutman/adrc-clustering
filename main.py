@@ -2,6 +2,8 @@
 import pickle
 import numpy as np
 from sklearn.cluster import KMeans
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import euclidean_distances
 import itertools
@@ -54,10 +56,10 @@ cluster_word_importance(patients, km.labels_)
 for label, centroids in clust_centroids.iteritems():
 	for centroid in centroids:
 		nx.draw_spectral(centroid.graph)
-		plt.savefig('data/cluster_%d_%d.jpg' % (label, centroid.index))
+		plt.savefig('results/cluster_%d_%d.png' % (label, centroid.index))
 		plt.clf() 
 
-with open("data/cluster_centers.csv", "w") as fh:
+with open("results/cluster_centers.csv", "w") as fh:
 	w = csv.writer(fh)
 	w.writerow(features)
 
