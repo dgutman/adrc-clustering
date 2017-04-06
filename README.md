@@ -5,4 +5,4 @@ Clustering dementia patients using their various tests such as clock, trail, dig
 
 How to run it?
 -------------------------
-    source activate adrc-clustering 
+    `source activate adrc-clustering` 
