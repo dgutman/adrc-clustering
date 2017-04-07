@@ -5,8 +5,8 @@ from sklearn.cluster import KMeans
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
-from features import *
-from clustering import *
+from libs.features import *
+from libs.clustering import *
 
 # Read patient data from CSV file and convert into Dict
 # Aggregate verbal fluency tests and compute patient 

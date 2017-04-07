@@ -1,3 +1,4 @@
+import re
 import csv
 import itertools
 import networkx as nx
