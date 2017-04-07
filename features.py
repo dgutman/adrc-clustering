@@ -7,6 +7,10 @@ from nltk.corpus import wordnet as wn
 from utils import *
 
 def read_data_from_file(filename):
+	""" read_data_from_file()
+	Read patient data from tab delimited file and converts
+	into dictionary
+	"""
 	patients = []
 	index = 0
 
@@ -22,6 +26,11 @@ def read_data_from_file(filename):
 	return patients
 
 def aggregate_fluency_tests(patients):
+	""" aggregate_fluency_tests()
+	Given patient dictionary, this function will look at specific keys,
+	namely the animal verbal fluency keys (avf_anm) and will aggregate
+	all words across the 4 tests into one set	
+	"""
 	pattern = re.compile("^avf_anm\d+$")
 
 	for p in patients:
@@ -33,6 +42,11 @@ def aggregate_fluency_tests(patients):
 	return patients
 
 def word_graph(patients):
+	""" word_graph()
+	For each patient use the aggregated verbal fluency data
+	to generate graph using NetworkX and generate the features
+	based on the graph
+	"""
 	for p in patients:
 		G = nx.Graph()
 
@@ -49,6 +63,10 @@ def word_graph(patients):
 	return patients
 
 def graph_features(G):
+	""" graph_features()
+	Given a graph compute some features including # edges,
+	# nodes, # cycles, diameter and longest cycle
+	"""
 	cycles =  nx.cycle_basis(G)
 	longestCycle = 0
 
@@ -64,6 +82,10 @@ def graph_features(G):
 	}
 
 def word_cleanup(words):
+	""" word_cleanup()
+	Given list of words, try to clean them up and only return valid words.
+	The function will return 2 lists: valid words and erred words
+	"""
 	valid_words = []
 	errors = []
 
@@ -78,6 +100,12 @@ def word_cleanup(words):
 	return valid_words, errors
 
 def is_word_valid(word):
+	""" is_word_valid()
+	Given a word check if it valid.
+		Lemmatize it
+		Convert it to lower case
+		Spell check it
+	"""
 	lmtzr = WordNetLemmatizer()
 	word = re.sub("\s*-\s*p|\s*\(p\)", "", word).lower()
 	lemmas = [lmtzr.lemmatize(spell(w)) for w in word.split() if re.match('\w{2,}\s*',w)]
