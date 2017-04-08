@@ -88,6 +88,11 @@ def cluster_centroids(X, patients, centers, labels):
 	return centroids
 
 def cluster_words(patients, labels):
+	""" cluster_words()
+	Given patients and their corresponding cluster labels compute
+	the frequency of each word in that cluster and return a dictionary 
+	of WORD:FREQUENCY
+	"""
 	ulabels = list(set(labels))
 	clust = []
 
@@ -104,6 +109,10 @@ def cluster_words(patients, labels):
 	return clust
 
 def cluster_ngrams(patients, labels):
+	""" cluster_ngrams()
+	Given patients and their corresponding cluster labels compute 
+	ngrams (n=2). This function is not used anywhere for now
+	"""
 	ulabels = list(set(labels))
 	clust = []
 
@@ -123,6 +132,11 @@ def cluster_ngrams(patients, labels):
 	return clust
 
 def cluster_word_importance(patients, labels):
+	""" cluster_word_importance()
+	Given patients and their corresponding cluster labels let us compute
+	the TF-IDF for each word in each cluster. See tfidf.py for more details.
+	The results are saved to CSV file.
+	"""
 	ulabels = list(set(labels))
 	documents = []
 	results =[]
@@ -146,6 +160,10 @@ def cluster_word_importance(patients, labels):
 	np.savetxt("results/tfidf.csv", np.stack(results, axis=1), fmt="%s,%s,%s,%s,%s,%s,%s,%s")
 
 def plot_dunn_index(di, n_clusters):
+	""" plot_dunn_index()
+	Given dunn index for n clusters generate a graph
+	and save it
+	"""
 	plt.plot(di, marker='*')
 	plt.xlabel("Number of Clusters")
 	plt.ylabel("Dunn's Index")
@@ -154,6 +172,10 @@ def plot_dunn_index(di, n_clusters):
 	plt.clf()
 
 def plot_sse(sse, n_clusters):
+	""" plot_sse()
+	Given sum of squared error for n clusters generate a graph
+	and save it
+	"""
 	plt.plot(sse, marker='*')
 	plt.xlabel("Number of Clusters")
 	plt.ylabel("Sum of Squared Error")
