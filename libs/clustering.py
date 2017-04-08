@@ -9,6 +9,11 @@ from nltk import ngrams
 from tfidf import *
 
 def dunn_index(X, cluster_labels):
+	""" dunn_index()
+	Compute dunn index, which is the ratio of the inter cluster
+	distance to the intra cluster distance. The lower the ratio
+	the more seprarable the clusters are.
+	"""
 	D = euclidean_distances(X)
 	labels = list(set(cluster_labels))
 	inter_clust_dist = []
@@ -26,6 +31,11 @@ def dunn_index(X, cluster_labels):
 	return di
 
 def sum_squared_error(X, centers, labels):
+	""" sum_squared_error()
+	Compute the sum of sequared error. This is the sum of distances
+	between all data points in a cluster and the corresponding cluster
+	center.
+	"""
 	sse = 0
 	ulabels = set(list(labels))
 
@@ -37,6 +47,12 @@ def sum_squared_error(X, centers, labels):
 	return sse
 
 def reordered_dist_matrix(X, labels):
+	""" reordered_dist_matrix()
+	Given the feature vector matrix X and the cluster labels, compute 
+	the distance between all data points then reorder the distance matrix
+	based on the cluster labels, such that data points with same cluster label
+	are adjacent.
+	"""
 	index = np.empty(shape=(0,0))
 	ulabels = list(set(labels))
 
@@ -53,6 +69,11 @@ def reordered_dist_matrix(X, labels):
 	plt.clf()
 
 def cluster_centroids(X, patients, centers, labels):
+	""" cluster_centroids()
+	Given feature vector matrix X, patients, cluster centers and label
+	find the patients most representitive of each cluster, the centroid.
+	A centroid is the patient closest to the cluster center.
+	"""
 	centroids = {}
 	ulabels = list(set(labels))
 
