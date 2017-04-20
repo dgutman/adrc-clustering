@@ -26,7 +26,7 @@ cd into the root of adrc-clustering directory:
 
 Activate the conda environment
 
-`source activate adrc-clustering` 
+`source /home/mkhali8/anaconda2/envs/adrc-clustering/bin/activate /home/mkhali8/anaconda2/envs/adrc-clustering/` 
 
 Run main.py:
 
