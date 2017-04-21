@@ -30,4 +30,4 @@ Activate the conda environment
 
 Run main.py:
 
-`./main.py`
+`./main.py -k 4`
