@@ -35,7 +35,7 @@ def aggregate_fluency_tests(patients):
 	pattern = re.compile("^avf_anm\d+$")
 
 	for p in patients:
-		words = [val.split(",") for key, val in p.data.iteritems() if pattern.match(key) and isinstance(val, str)]
+		words = [val.split(" ") for key, val in p.data.iteritems() if pattern.match(key) and isinstance(val, str)]
 		words = list(itertools.chain(*words))
 		p.words, p.errors = word_cleanup(words)
 		patients[p.index] = p
