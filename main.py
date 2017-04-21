@@ -14,7 +14,7 @@ from config import *
 
 # Define functions
 def compute_sse(X): 
-	""" compute_sse
+	""" compute_sse()
 	Compute the sum of squared error for n clusters
 	"""
 	sse = []
@@ -23,12 +23,12 @@ def compute_sse(X):
 	for n in n_clusters:
 		km = KMeans(n_clusters=n)
 		clustering = km.fit(X)
-		sse.append(sum_squared_error(A, clustering.cluster_centers_, km.labels_))
+		sse.append(sum_squared_error(X, clustering.cluster_centers_, km.labels_))
 
 	plot_sse(sse, n_clusters, os.path.join(results_dir, 'sse.png'))
 
 def compute_di(X): 
-	""" compute_di
+	""" compute_di()
 	Compute dunn index for n clusters
 	"""
 	di = []
@@ -37,9 +37,31 @@ def compute_di(X):
 	for n in n_clusters:
 		km = KMeans(n_clusters=n)
 		clustering = km.fit(X)
-		sse.append(sum_squared_error(A, clustering.cluster_centers_, km.labels_))
+		sse.append(sum_squared_error(X, clustering.cluster_centers_, km.labels_))
 
 	plot_dunn_index(di, n_clusters, os.path.join(results_dir, 'dunn_index.png'))
+
+def save_cluster_centroids(clust_centroids):
+	"""save_cluster_centroids()
+	Save cluster centroid (patients graphs) to file
+	"""
+	for label, centroids in clust_centroids.iteritems():
+		for centroid in centroids:
+			nx.draw_spectral(centroid.graph)
+			output = os.path.join(results_dir, 'cluster_%d_%d.png' % (label, centroid.index))
+			plt.savefig(output)
+			plt.clf() 
+
+def save_cluster_centers(features, centers):
+	"""save_cluster_centers()
+	Save cluster centers to CSV file
+	"""
+	with open(os.path.join(results_dir, "cluster_centers.csv"), "w") as fh:
+		w = csv.writer(fh)
+		w.writerow(features)
+
+		for center in centers:
+			w.writerow(center)
 
 if __name__ == "__main__":
 	# Parse command line arguments
@@ -85,24 +107,7 @@ if __name__ == "__main__":
 	# Compute distance between centers and patients
 	# Reorder the matrix, then save the image
 	reordered_dist_matrix(X, km.labels_, os.path.join(results_dir, 'reordered_sim_matrix.png'))
-
-	# Save cluster centers and TF-IDF values for words in each cluster
 	clust_centroids = cluster_centroids(X, patients, centers, km.labels_)
 	cluster_word_importance(patients, km.labels_, os.path.join(results_dir, 'tfidf.csv'))
-
-	# Find representitive patients for each cluster and save
-	# their verbal fluency graph
-	for label, centroids in clust_centroids.iteritems():
-		for centroid in centroids:
-			nx.draw_spectral(centroid.graph)
-			output = os.path.join(results_dir, 'cluster_%d_%d.png' % (label, centroid.index))
-			plt.savefig(output)
-			plt.clf() 
-
-	# Write cluster center to file
-	with open(os.path.join(results_dir, "cluster_centers.csv"), "w") as fh:
-		w = csv.writer(fh)
-		w.writerow(features)
-
-		for center in centers:
-			w.writerow(center)
+	save_cluster_centroids(clust_centroids)
+	save_cluster_centers(features, centers)
