@@ -28,6 +28,14 @@ Activate the conda environment
 
 `source /home/mkhali8/anaconda2/envs/adrc-clustering/bin/activate /home/mkhali8/anaconda2/envs/adrc-clustering/` 
 
-Run main.py:
+Running main.py:
 
-`./main.py -k 4`
+USAGE: ./main.py [OPTIONS]
+ 
+The OPTIONS are:
+
+`-k` number of clusters, default is 4
+
+`-sse` compute sum of squared error
+
+`-di` compute dunn index 
