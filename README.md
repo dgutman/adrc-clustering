@@ -36,6 +36,18 @@ The OPTIONS are:
 
 `-k` number of clusters, default is 4
 
+`-i` input file, default is specified in config.py
+
+`-o` output directory, default is specified in config.py
+
 `-sse` compute sum of squared error
 
 `-di` compute dunn index 
+
+Example usage:
+
+`./main -k 4` generate 4 clusters
+
+`./main.py -k 6 -sse` generate 6 clusters and sum of squared error graph
+
+
