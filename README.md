@@ -28,9 +28,21 @@ Activate the conda environment
 
 `source /home/mkhali8/anaconda2/envs/adrc-clustering/bin/activate /home/mkhali8/anaconda2/envs/adrc-clustering/` 
 
+Enter python interactive mode:
+
+ `python`
+
+Install NLTK files:
+
+`import nltk`
+
+`nltk.download()`
+
+Follow the instuctions for download. When given the list of packages to install. Simple install `all`
+
 Running main.py:
 
-USAGE: ./main.py [OPTIONS]
+USAGE: python main.py [OPTIONS]
  
 The OPTIONS are:
 

@@ -73,9 +73,11 @@ if __name__ == "__main__":
 	parser.add_argument("-di", "--dunn_index", help="Compute dunn index", action="store_true")
 	args = parser.parse_args()
 
-	# Initialize some variables
+	# Check if the results dir exists or create one
 	results_dir = os.path.join(args.output, "k"+str(args.n_clusters))							# output dir
-	
+	if not os.path.exists(results_dir):
+		os.makedirs(results_dir)
+
 	# Read patient data from CSV file and convert into Dict
 	# Aggregate verbal fluency tests and compute patient 
 	# graph and its features
