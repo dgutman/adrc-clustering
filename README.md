@@ -24,6 +24,10 @@ cd into the root of adrc-clustering directory:
 
 `cd adrc-clustering`
 
+Rename the `config.py.example` to `config.py`
+
+Change the `OUTPUT_DIR` to your local adrc-clustering path
+
 Activate the conda environment
 
 `source /home/mkhali8/anaconda2/envs/adrc-clustering/bin/activate /home/mkhali8/anaconda2/envs/adrc-clustering/` 
