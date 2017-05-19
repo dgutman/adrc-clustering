@@ -156,7 +156,6 @@ def cluster_word_importance(patients, cluster_labels, output):
 		results.append(np.array(features)[idx])
 		results.append( (tf[k][idx] / clust_size[k]) * 100 )
 
-	print np.stack(results, axis=1)
 	np.savetxt(output, np.stack(results, axis=1), fmt="%s"*len(labels)*2)
 
 def plot_dunn_index(di, n_clusters, output):

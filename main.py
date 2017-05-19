@@ -1,4 +1,4 @@
-#!/home/mkhali8/anaconda2/envs/adrc-clustering/bin/python
+#!/home/mkhali8/anaconda2/envs/adrc-clustering/bin/python -W ignore
 
 import os
 import sys
@@ -65,7 +65,10 @@ def save_cluster_centers(features, centers):
 
 if __name__ == "__main__":
 	# Parse command line arguments
+	default_features = "node_count,edged_count,cycle_count,error_count,diameter,longest_cycle"
+
 	parser = argparse.ArgumentParser()
+	parser.add_argument("-f", "--features", default=default_features, type=str, help="list of features")
 	parser.add_argument("-k", "--n_clusters", default=4, type=int, help="number of clusters")
 	parser.add_argument("-i", "--input", default=INPUT_FILE, help="Input file (full path)")
 	parser.add_argument("-o", "--output", default=OUTPUT_DIR, help="Output directory")
@@ -74,32 +77,30 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	# Check if the results dir exists or create one
+	print "Creating output directory..."
 	results_dir = os.path.join(args.output, "k"+str(args.n_clusters))							# output dir
 	if not os.path.exists(results_dir):
 		os.makedirs(results_dir)
+	print "Output directory: %s" % results_dir
 
 	# Read patient data from CSV file and convert into Dict
 	# Aggregate verbal fluency tests and compute patient 
 	# graph and its features
+	print "Reading data file..."
 	patients = read_data_from_file(args.input)
+
+	print "Generate graph and graph features..."
 	patients = aggregate_fluency_tests(patients)
 	patients = word_graph(patients)
-
-	# Generate feature vector matrix using graph features
-	n = len(patients)																			# number of patients
-	m = len(patients[0].features) + 1 															# number of features
-	X = np.zeros(shape=(n,m))																	# Feature matrix
-	features = patients[0].features.keys() + ["errors"]
-
-	for patient in patients:
-		X[patient.index] = patient.features.values() + [len(patient.errors)]
-
+	patients, features, X = build_feature_matrix(patients, args.features.split(","))
+	
 	if args.squared_error:
 		compute_sse(X)
 	if args.dunn_index:
 		compute_di(X)
 
 	# Run k-means for some k clusters
+	print "Run k-means for %d with k=%d..." % (len(patients), args.n_clusters)
 	km = KMeans(n_clusters=args.n_clusters)
 	clustering = km.fit(X)
 	centers = clustering.cluster_centers_
@@ -108,8 +109,11 @@ if __name__ == "__main__":
 	# Given the matrix A and cluster labels
 	# Compute distance between centers and patients
 	# Reorder the matrix, then save the image
+	print "Cluster summurization..."
 	reordered_dist_matrix(X, km.labels_, os.path.join(results_dir, 'reordered_sim_matrix.png'))
 	clust_centroids = cluster_centroids(X, patients, centers, km.labels_)
 	cluster_word_importance(patients, km.labels_, os.path.join(results_dir, 'tfidf.csv'))
 	save_cluster_centroids(clust_centroids)
 	save_cluster_centers(features, centers)
+
+	print "Done"
