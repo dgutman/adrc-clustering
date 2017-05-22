@@ -66,7 +66,7 @@ def save_cluster_centers(features, centers):
 
 if __name__ == "__main__":
 	# Parse command line arguments
-	default_features = "node_count edge_count cycle_count error_count diameter longest_cycle"
+	default_features = ["node_count", "edge_count", "cycle_count", "error_count", "diameter", "longest_cycle"]
 
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-f", "--features", nargs='+', default=default_features, type=str, help="list of features")
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 	print "Generate graph and graph features..."
 	patients = aggregate_fluency_tests(patients)
 	patients = word_graph(patients)
-	patients, features, X = build_feature_matrix(patients, args.features.split())
+	patients, features, X = build_feature_matrix(patients, args.features)
 	
 	if args.squared_error:
 		compute_sse(X)
