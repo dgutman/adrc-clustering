@@ -38,7 +38,7 @@ def compute_di(X):
 	for n in n_clusters:
 		km = KMeans(n_clusters=n)
 		clustering = km.fit(X)
-		sse.append(sum_squared_error(X, clustering.cluster_centers_, km.labels_))
+		di.append(sum_squared_error(X, clustering.cluster_centers_, km.labels_))
 
 	plot_dunn_index(di, n_clusters, os.path.join(results_dir, 'dunn_index.png'))
 
