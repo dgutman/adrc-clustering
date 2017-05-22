@@ -44,9 +44,7 @@ Install NLTK files:
 
 Follow the instuctions for download. When given the list of packages to install. Simple install `all`
 
-Running main.py:
-
-USAGE: python main.py [OPTIONS]
+usage: main.py [-h] [-f FEATURES [FEATURES ...]] [-k N_CLUSTERS] [-i INPUT] [-o OUTPUT] [-sse] [-di]
  
 The OPTIONS are:
 
