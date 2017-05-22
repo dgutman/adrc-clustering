@@ -4,6 +4,7 @@ import os
 import sys
 import argparse
 import numpy as np
+import time
 from sklearn.cluster import KMeans
 import matplotlib as mpl
 mpl.use('Agg')
@@ -78,7 +79,8 @@ if __name__ == "__main__":
 
 	# Check if the results dir exists or create one
 	print "Creating output directory..."
-	results_dir = os.path.join(args.output, "k"+str(args.n_clusters))							# output dir
+	print time.strftime("%Y-%m-%d-%H-%M-%D")
+	results_dir = os.path.join(args.output, "k"+str(args.n_clusters), time.strftime("%Y-%m-%d-%H-%M-%S"))
 	if not os.path.exists(results_dir):
 		os.makedirs(results_dir)
 	print "Output directory: %s" % results_dir
