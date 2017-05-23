@@ -6,6 +6,7 @@ import networkx as nx
 from autocorrect import spell
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.corpus import wordnet as wn
+from sklearn.preprocessing import normalize, scale
 from utils import *
 
 def read_data_from_file(filename):
@@ -163,6 +164,5 @@ def build_feature_matrix(patients, feature_names, f=np.median, t=0.2):
 	for patient in patients:
 		X[patient.index] = patient.features.values()
 
+	X = normalize(X, norm='max', axis=0)
 	return patients, feature_names, X
-
-

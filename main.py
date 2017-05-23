@@ -79,7 +79,6 @@ if __name__ == "__main__":
 
 	# Check if the results dir exists or create one
 	print "Creating output directory..."
-	print time.strftime("%Y-%m-%d-%H-%M-%D")
 	results_dir = os.path.join(args.output, "k"+str(args.n_clusters), time.strftime("%Y-%m-%d-%H-%M-%S"))
 	if not os.path.exists(results_dir):
 		os.makedirs(results_dir)

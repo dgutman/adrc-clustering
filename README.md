@@ -81,8 +81,6 @@ diameter
 
 longest_cycle
 
-trails_testmethod
-
 ds_rd_t1_2_resp
 
 ds_rd_t1_5_scr
@@ -93,27 +91,13 @@ np_clock_center_q13
 
 ds_fd_t1_3_resp
 
-legacy_cerad_animal_veg_fluency_complete
-
-avf_anm_notes
-
 ds_fd_t2_3_resp
-
-ds_testmethod
 
 trails_b_errors
 
-record_id
-
 trails_tester
 
-avf_anm_zsc
-
-legacy_trails_complete
-
 avf_anm1_c
-
-trails_note
 
 ds_fd_t2_1_resp
 
@@ -121,11 +105,7 @@ ds_fd_t1_5_resp
 
 np_clock_handprop_q10
 
-trails_b_z
-
 avf_anm3_c
-
-ds_rd_zsc
 
 ds_fd_t1_2_scr
 
@@ -136,8 +116,6 @@ ds_fd_na
 ds_fd_t1_6_resp
 
 ds_fd_t1_1_resp
-
-np_clock_testmethod
 
 ds_rd_t2_4_resp
 
@@ -159,10 +137,6 @@ avf_anm_ncomp
 
 ds_rd_t1_4_resp
 
-trails_a_z
-
-avf_veg_tot
-
 ds_fd_t2_1_scr
 
 ds_fd_t2_4_resp
@@ -175,17 +149,11 @@ avf_veg3
 
 avf_veg1
 
-avf_anm_tot
-
 avf_veg4
 
 clock_file_upload
 
-ds_fd_zsc
-
 ds_rd_t1_3_resp
-
-ds_fd_total
 
 ds_tester
 
@@ -211,8 +179,6 @@ trails_files_upload
 
 ds_incomp
 
-avf_anm_testmethod
-
 ds_rd_span
 
 trails_a_incomp
@@ -231,8 +197,6 @@ ds_fd_t1_3_scr
 
 np_clock_numcirc_q6
 
-np_clock_zsc
-
 ds_totalboth
 
 ds_fd_t2_5_scr
@@ -247,11 +211,7 @@ ds_rd_na
 
 np_clock_ordnum_q3
 
-np_clock_total
-
 ds_rd_t2_6_resp
-
-ds_notes
 
 ds_rd_t1_1_resp
 
@@ -281,8 +241,6 @@ trails_b_time
 
 ds_rd_t2_1_resp
 
-avf_anm4
-
 np_clock_hourtarg_q8
 
 np_clock_minute_q9
@@ -301,8 +259,6 @@ ds_fd_t2_4_scr
 
 ds_rd_t2_5_resp
 
-exam_date
-
 avf_anm_tester
 
 avf_anm2_c
@@ -311,27 +267,13 @@ ds_fd_t1_4_resp
 
 trails_b_na
 
-legacy_digit_span_complete
-
-ds_rd_total
-
-avf_anm2
-
-avf_anm3
-
 trails_a_na
-
-avf_anm1
 
 legacy_clock_complete
 
 avf_anm4_c
 
 ds_rd_t2_3_scr
-
-np_clock_note
-
-pt_id
 
 trails_a_errors
 
