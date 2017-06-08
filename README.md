@@ -18,7 +18,9 @@ How to run it?
 -------------------------
 Install Kmedoids clustering algorithm:
 
-git clone https://github.com/scikit-learn/scikit-learn.git -n kmedoids
+git clone https://github.com/scikit-learn/scikit-learn.git -b kmedoids
+
+cd scikit-learn
 
 python setup.py install --user
 
