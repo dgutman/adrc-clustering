@@ -1,0 +1,3 @@
+[submodule "libs/scikit-learn-ext"]
+	path = libs/scikit-learn-ext
+	url = https://github.com/terkkila/scikit-learn.git

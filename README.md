@@ -16,7 +16,13 @@ The filename is
 
 How to run it?
 -------------------------
-Clone this repo:
+Install Kmedoids clustering algorithm:
+
+git clone https://github.com/scikit-learn/scikit-learn.git -n kmedoids
+
+python setup.py install --user
+
+Clone this adrc clustering:
 
 `git clone git@github.com:scimk/adrc-clustering.git`
 
@@ -47,6 +53,10 @@ Follow the instuctions for download. When given the list of packages to install.
 usage: ./main.py [-f FEATURES [FEATURES ...]] [-k N_CLUSTERS] [-i INPUT] [-o OUTPUT] [-sse] [-di]
  
 The OPTIONS are:
+
+`-a` clustering algorithm to use (KMeans or KMedoids)
+
+`-d` distance metric to use with KMedoids (see [sklearn.metrics.pairwise](http://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.pairwise_distances.html) for list of distance metrics)
 
 `-f` list of features, space separated
 

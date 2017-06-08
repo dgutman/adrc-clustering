@@ -5,7 +5,7 @@ import sys
 import argparse
 import numpy as np
 import time
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, KMedoids
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
@@ -69,6 +69,8 @@ if __name__ == "__main__":
 	default_features = ["node_count", "edge_count", "cycle_count", "error_count", "diameter", "longest_cycle"]
 
 	parser = argparse.ArgumentParser()
+	parser.add_argument("-a", "--algorithm", default="KMeans", type=str, help="Clustering algorithm [KMeans, KMedoids]")
+	parser.add_argument("-d", "--distance_metric", default="euclidean", type=str, help="Distance function for KMedoids. Look into sklearn.metrics.pairwise for list of distance metrics")
 	parser.add_argument("-f", "--features", nargs='+', default=default_features, type=str, help="list of features")
 	parser.add_argument("-k", "--n_clusters", default=4, type=int, help="number of clusters")
 	parser.add_argument("-i", "--input", default=INPUT_FILE, help="Input file (full path)")
@@ -101,8 +103,13 @@ if __name__ == "__main__":
 		compute_di(X)
 
 	# Run k-means for some k clusters
-	print "Run k-means for %d with k=%d..." % (len(patients), args.n_clusters)
-	km = KMeans(n_clusters=args.n_clusters)
+	print "Run %s for %d with k=%d..." % (args.algorithm, len(patients), args.n_clusters)
+
+	if args.algorithm == "KMeans":
+		km = KMeans(n_clusters=args.n_clusters)
+	if args.algorithm == "KMedoids":
+		km = KMedoids(n_clusters=args.n_clusters, distance_metric=args.distance_metric)
+
 	clustering = km.fit(X)
 	centers = clustering.cluster_centers_
 	labels = list(set(km.labels_))
