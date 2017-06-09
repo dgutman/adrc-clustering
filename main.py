@@ -69,7 +69,7 @@ if __name__ == "__main__":
 	default_features = ["node_count", "edge_count", "cycle_count", "error_count", "diameter", "longest_cycle"]
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-a", "--algorithm", default="KMeans", type=str, help="Clustering algorithm [KMeans, KMedoids]")
+	parser.add_argument("-a", "--algorithm", default="kmeans", type=str, help="Clustering algorithm [kmeans, kmedoids]")
 	parser.add_argument("-d", "--distance_metric", default="euclidean", type=str, help="Distance function for KMedoids. Look into sklearn.metrics.pairwise for list of distance metrics")
 	parser.add_argument("-f", "--features", nargs='+', default=default_features, type=str, help="list of features")
 	parser.add_argument("-k", "--n_clusters", default=4, type=int, help="number of clusters")
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
 	# Check if the results dir exists or create one
 	print "Creating output directory..."
-	results_dir = os.path.join(args.output, "k"+str(args.n_clusters), time.strftime("%Y-%m-%d-%H-%M-%S"))
+	results_dir = os.path.join(args.output, "k"+str(args.n_clusters), args.algorithm, time.strftime("%Y-%m-%d-%H-%M-%S"))
 	if not os.path.exists(results_dir):
 		os.makedirs(results_dir)
 	print "Output directory: %s" % results_dir
@@ -105,9 +105,9 @@ if __name__ == "__main__":
 	# Run k-means for some k clusters
 	print "Run %s for %d with k=%d..." % (args.algorithm, len(patients), args.n_clusters)
 
-	if args.algorithm == "KMeans":
+	if args.algorithm == "kmeans":
 		km = KMeans(n_clusters=args.n_clusters)
-	if args.algorithm == "KMedoids":
+	if args.algorithm == "kmedoids":
 		km = KMedoids(n_clusters=args.n_clusters, distance_metric=args.distance_metric)
 
 	clustering = km.fit(X)
