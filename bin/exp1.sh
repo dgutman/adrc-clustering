@@ -1,7 +1,8 @@
 #!/bin/sh
 
 ../main.py \
-	-a kmeans \
+	-a kmedoids \
+	-d manhattan \
 	-k 5 \
 	-sse \
 	-di \
