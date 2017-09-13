@@ -5,7 +5,11 @@ import sys
 import argparse
 import numpy as np
 import time
-from sklearn.cluster import KMeans, KMedoids
+from sklearn.cluster import KMeans
+#, KMedoids
+#from sklearn.cluster import KMeans
+
+
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
